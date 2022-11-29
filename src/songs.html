@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Lyrics</title>
+    <meta name="keywords" content="текст, песни, исполнители, лсп, Lyrics">
+    <meta name="description" content="Коллекция песен популярных музыкальных исполнителей Lyrics">
+    <link rel="stylesheet" href="style.css">
+    <script src="alert.js"></script>
+    <script src="sort_table.js"></script>
+    <script src="api.js"></script>
+</head>
+<body>
+<div>
+    <header class="header wide_section">
+        <a href="index.html" class="home header__link">
+            Lyrics
+        </a>
+        <nav class="navigation_group">
+            <a href="index.html" class="header__link">Главная</a>
+            <a href="songs.html" class="header__link">Песни</a>
+        </nav>
+    </header>
+    <main class="content">
+        <section>
+            <h1 class="header1">Коллекция песен</h1>
+            <div class="table">
+                <div>
+                    <div>
+                        <div>Id</div>
+                        <div>Название</div>
+                        <div>Авторы</div>
+                    </div>
+                </div>
+                <div id="songs_list"></div>
+            </div>
+        </section>
+    </main>
+</div>
+<footer class="footer wide_section">
+    <div id="time_label">{подождите JS}</div>
+</footer>
+<script>
+    window.addEventListener("load", () => {
+        api.songs.list().then(songs => {
+            let songsView = document.getElementById("songs_list");
+            let songsListHtml = ``;
+            songs.forEach((song) => {
+                songsListHtml += `
+<a href="song.html?id=${song.id}">
+    <div>${song.id}</div>
+    <div>${song.title}</div>
+    <div>${song.artistNames}</div>
+</a>
+`;
+                songsView.innerHTML = songsListHtml;
+            });
+        });
+        document.getElementById("time_label").innerText = new Date().toLocaleTimeString();
+    })
+</script>
+</body>
+</html>

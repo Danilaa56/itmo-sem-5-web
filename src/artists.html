@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Исполнители</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="alert.js"></script>
+    <script src="sort_table.js"></script>
+    <script src="api.js"></script>
+</head>
+<body>
+<header class="header">
+    <a href="/home" class="home">
+        Lyrics
+    </a>
+    <nav class="navigation_group">
+        <a href="/artists.html">Исполнители</a>
+        <a href="/songs.html">Песни</a>
+    </nav>
+</header>
+<main class="content">
+    <div class="table">
+        <div>
+            <div>
+                <div>Id</div>
+                <div>Название</div>
+                <div>Авторы</div>
+            </div>
+        </div>
+        <div id="songsList"></div>
+    </div>
+</main>
+<script>
+    window.addEventListener("load", () => {
+        api.songs.list().then(songs => {
+            let songsView = document.getElementById("songsList");
+            let songsListHtml = ``;
+            songs.forEach((song) => {
+                songsListHtml += `
+<a href="/song.html?id=${song.id}">
+    <div>${song.id}</div>
+    <div>${song.title}</div>
+    <div>${song.artistNames}</div>
+</a>
+`;
+                songsView.innerHTML = songsListHtml;
+            });
+        });
+    })
+</script>
+</body>
+</html>

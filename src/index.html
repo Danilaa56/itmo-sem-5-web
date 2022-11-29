@@ -1,10 +1,164 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Test</title>
+    <meta charset="UTF-8"/>
+    <title>Lyrics</title>
+    <meta name="keywords" content="текст, песни, исполнители, лсп, Lyrics">
+    <meta name="description" content="Тексты песен популярных музыкальных исполнителей">
+    <link rel="stylesheet" href="style.css">
+    <script src="alert.js"></script>
+    <script src="sort_table.js"></script>
+    <script src="api.js"></script>
 </head>
-<body>
-<p>I'd like to say special thanks to JetBrains Team for such a wonderful auto-gen</p>
+<body class="root">
+<div>
+    <header class="header wide_section">
+        <a href="index.html" class="home header__link">
+            Lyrics
+        </a>
+        <nav class="navigation_group">
+            <a href="index.html" class="header__link">Главная</a>
+            <a href="songs.html" class="header__link">Песни</a>
+        </nav>
+    </header>
+    <main class="content">
+        <section>
+            <article>
+                <h1 class="header1">Lyrics</h1>
+                <h3 class="header2">Что это?</h3>
+                <p>
+                    Lyrics - это адаптированный проект сайта с текстами песен для моей лабораторной работы по
+                    Web-программированию.
+                </p>
+                <h3 class="header2">Основные достоинства</h3>
+                <ul>
+                    <li>Простота использования</li>
+                    <li>Большая коллекция
+                        <ul>
+                            <li id="songsCount">{подождите JS}</li>
+                            <li id="artistsCount">{подождите JS}</li>
+                        </ul>
+                    </li>
+                    <li>ASCII-арт на главной странице
+                        <ul>
+                            <li>
+                                <pre class="asciiArt">Click anything <3</pre>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3 class="header2">Внимание!</h3>
+                <p>
+                    После ASCII арта ничего лучше не будет, но ещё не все теги были использованы.
+                </p>
+                <h3 class="header2">Вдохновлено</h3>
+                <p>Хотелось бы привести фразу, которая вдохновляет на дальнейшие исследования в области дизайна и
+                    пользовательского интерфейса.
+                <blockquote cite="https://isu.ifmo.ru/pls/apex/f?p=2143:3:112733280738695::NO:RP:PID:184321">
+                    <i>«<b class="span__for_friendship">За дружбу</b> <span class="blue_text white_shadow">на сайте
+                isu.ifmo.ru»</span></i><sup><a
+                        href="https://isu.ifmo.ru/pls/apex/f?p=2143:3:112733280738695::NO:RP:PID:184321">ISU</a></sup>
+                </blockquote>
+                </p>
+            </article>
+        </section>
+        <section>
+            <h1 class="header1">Коллекция песен</h1>
+            <div class="images_container">
+            </div>
+        </section>
+    </main>
+</div>
+<footer class="footer wide_section">
+    <div id="time_label">{подождите JS}</div>
+</footer>
+<script>
+    window.addEventListener("load", () => {
+        api.songs.list().then(songs => {
+            let artistIds = new Set();
+            let songsCount = 0;
+            songs.forEach((song) => {
+                artistIds.add(song.lyricsOwnerId);
+                songsCount++;
+            });
+            let artistsCount = artistIds.size;
+
+            function caseByCount(n) {
+                if (n < 0) n *= -1;
+                n = n % 100;
+                if (10 <= n && n <= 20)
+                    return 2;
+                let digit = n % 10;
+                if (digit === 1)
+                    return 0;
+                if (2 <= digit && digit <= 4)
+                    return 1;
+                return 2;
+            }
+
+            document.getElementById("artistsCount").innerText =
+                artistsCount + " " + ["исполнитель", "исполнителя", "исполнителей"][caseByCount(artistsCount)];
+            document.getElementById("songsCount").innerText =
+                songsCount + " " + ["песня", "песни", "песен"][caseByCount(songsCount)];
+
+            let imagesContainer = document.getElementsByClassName("images_container")[0];
+
+            let imagesHtml = '';
+            songs.forEach((song) => {
+                imagesHtml +=
+                    `
+<a href="/songs.html?id=${song.id}">
+    <div class="song_cover__container">
+        <div class="song_cover" style="background-image: url('${song.songArtImageUrl}');">
+            <div class="song_cover__title">${song.title}</div>
+        </div>
+        <div class="song_cover__shadow" style="background-image: url('${song.songArtImageUrl}');"></div>
+    </div>
+</a>
+`;
+            });
+
+            imagesContainer.innerHTML = imagesHtml;
+        });
+
+        document.getElementById("time_label").innerText = new Date().toLocaleTimeString();
+    });
+
+    let jinxedAudio = new Audio('/jinxed.m4a');
+    let jinxedPromise = fetch('/jinxed-2.txt');
+
+    let jinxedStarted = false;
+    window.addEventListener("click", () => {
+        if (jinxedStarted)
+            return;
+        jinxedStarted = true;
+
+        jinxedAudio.play();
+
+        let asciiArtView = document.getElementsByClassName("asciiArt")[0];
+        jinxedPromise
+            .then(response => response.text())
+            .then(text => {
+                let frames = text.split("SPLIT");
+                console.log("Load ascii art: " + frames.length + " frames");
+
+                let frameRate = 24;
+                let startTime = Date.now();
+                let lastShownFrame = -1;
+                let asciiInterval = setInterval(() => {
+                    let frameIndex = Math.floor((Date.now() - startTime) / 1000 * frameRate);
+                    if (frameIndex >= frames.length) {
+                        clearInterval(asciiInterval);
+                        return;
+                    }
+
+                    if (lastShownFrame !== frameIndex) {
+                        asciiArtView.innerText = frames[frameIndex];
+                        lastShownFrame = frameIndex;
+                    }
+                }, 0);
+            });
+    });
+</script>
 </body>
 </html>
