@@ -44,7 +44,7 @@ let api = {
                 });
         },
         list: () => {
-            return fetch(`/songs.json`)
+            return fetch(`songs.json`)
                 .then(response => {
                     if (response.status === 200) {
                         return response.json();
