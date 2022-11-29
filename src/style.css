@@ -260,18 +260,24 @@ td.button:hover, .table > div > * > *.button:hover {
     font-family: monospace;
     line-height: 1em;
     font-size: 11px;
-    letter-spacing: -1px;
+    white-space: pre;
 }
 
 @media (max-width: 1080px) {
     .asciiArt {
+        font-family: monospace;
+        line-height: 1em;
         font-size: 6px;
+        white-space: pre;
     }
 }
 
 @media (max-width: 1440px) {
     .asciiArt {
+        font-family: monospace;
+        line-height: 1em;
         font-size: 8px;
+        white-space: pre;
     }
 }
 
