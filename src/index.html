@@ -156,7 +156,7 @@
                     }
 
                     if (lastShownFrame !== frameIndex) {
-                        asciiArtView.innerText = frames[frameIndex];
+                        asciiArtView.innerText = frames[frameIndex].replaceAll(' ', '.');
                         lastShownFrame = frameIndex;
                     }
                 }, 0);
