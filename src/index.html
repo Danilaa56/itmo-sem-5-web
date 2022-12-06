@@ -5,15 +5,13 @@
     <title>Lyrics</title>
     <meta name="keywords" content="текст, песни, исполнители, лсп, Lyrics">
     <meta name="description" content="Тексты песен популярных музыкальных исполнителей">
-    <link rel="stylesheet" href="style.css">
-    <script src="alert.js"></script>
-    <script src="sort_table.js"></script>
-    <script src="api.js"></script>
+    <link rel="stylesheet" href="staff/style.css">
+    <script src="staff/common.js"></script>
+    <script src="staff/alert.js"></script>
+    <script src="staff/sort_table.js"></script>
+    <script src="staff/api.js"></script>
 </head>
 <body class="root">
-<script>
-    let loadStart = Date.now();
-</script>
 <div>
     <header class="header wide_section">
         <a href="index.html" class="home header__link">
@@ -25,7 +23,7 @@
         </nav>
     </header>
     <main class="content">
-        <section>
+        <section class="section">
             <article>
                 <h1 class="header1">Lyrics</h1>
                 <h3 class="header2">Что это?</h3>
@@ -45,11 +43,18 @@
                     <li>ASCII-арт на главной странице
                         <ul>
                             <li>
-                                <pre class="asciiArt">Click anything <3</pre>
+                                <pre>Click anything <3</pre>
                             </li>
                         </ul>
                     </li>
                 </ul>
+            </article>
+        </section>
+        <section class="wide_section section__wide__ascii_art">
+            <pre class="ascii_art"></pre>
+        </section>
+        <section class="section">
+            <article>
                 <h3 class="header2">Внимание!</h3>
                 <p>
                     После ASCII арта ничего лучше не будет, но ещё не все теги были использованы.
@@ -65,7 +70,7 @@
                 </p>
             </article>
         </section>
-        <section>
+        <section class="section">
             <h1 class="header1">Коллекция песен</h1>
             <div class="images_container">
             </div>
@@ -73,6 +78,7 @@
     </main>
 </div>
 <footer class="footer wide_section">
+    <div id="load_time_label">{подождите JS}</div>
     <div id="time_label">{подождите JS}</div>
 </footer>
 <script>
@@ -123,40 +129,39 @@
 
             imagesContainer.innerHTML = imagesHtml;
         });
-
-        document.getElementById("time_label").innerText = new Date().toLocaleTimeString();
     });
 
-    let jinxedAudio = new Audio('jinxed.m4a');
-    let jinxedPromise = fetch('jinxed-2.txt');
+    let asciiAudio = new Audio('data/jinxed.m4a');
+    let asciiTxt = 'data/get-jinxed.webm.txt';
+    const asciiFps = 24;
+    let asciiPromise = fetch(asciiTxt);
 
-    let jinxedStarted = false;
+    let asciiStarted = false;
     window.addEventListener("click", () => {
-        if (jinxedStarted)
+        if (asciiStarted)
             return;
-        jinxedStarted = true;
+        asciiStarted = true;
 
-        jinxedAudio.play();
+        asciiAudio.play();
 
-        let asciiArtView = document.getElementsByClassName("asciiArt")[0];
-        jinxedPromise
+        let asciiArtView = document.getElementsByClassName("ascii_art")[0];
+        asciiPromise
             .then(response => response.text())
             .then(text => {
                 let frames = text.split("SPLIT");
                 console.log("Load ascii art: " + frames.length + " frames");
 
-                let frameRate = 24;
                 let startTime = Date.now();
                 let lastShownFrame = -1;
                 let asciiInterval = setInterval(() => {
-                    let frameIndex = Math.floor((Date.now() - startTime) / 1000 * frameRate);
+                    let frameIndex = Math.floor((Date.now() - startTime) / 1000 * asciiFps);
                     if (frameIndex >= frames.length) {
                         clearInterval(asciiInterval);
                         return;
                     }
 
                     if (lastShownFrame !== frameIndex) {
-                        asciiArtView.innerText = frames[frameIndex].replaceAll(' ', '.');
+                        asciiArtView.innerText = frames[frameIndex];
                         lastShownFrame = frameIndex;
                     }
                 }, 0);
