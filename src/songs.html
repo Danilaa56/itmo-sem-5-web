@@ -25,16 +25,6 @@
     <main class="content">
         <section class="section">
             <h1 class="header1">Коллекция песен</h1>
-            <div class="table">
-                <div>
-                    <div>
-                        <div>Id</div>
-                        <div>Название</div>
-                        <div>Авторы</div>
-                    </div>
-                </div>
-                <div id="songs_list"></div>
-            </div>
         </section>
     </main>
 </div>
@@ -45,18 +35,7 @@
 <script>
     window.addEventListener("load", () => {
         api.songs.list().then(songs => {
-            let songsView = document.getElementById("songs_list");
-            let songsListHtml = ``;
-            songs.forEach((song) => {
-                songsListHtml += `
-<a href="song.html?id=${song.id}">
-    <div>${song.id}</div>
-    <div>${song.title}</div>
-    <div>${song.artistNames}</div>
-</a>
-`;
-                songsView.innerHTML = songsListHtml;
-            });
+            document.querySelector('.content .section').appendChild(songs_to_table(songs));
         });
     })
 </script>

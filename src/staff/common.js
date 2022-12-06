@@ -34,3 +34,32 @@
         }
     });
 }
+
+const songs_to_table = function (songs) {
+    let table = document.createElement('div');
+    table.className = 'table';
+
+    let songsListHtml = ``;
+    songs.forEach((song) => {
+        songsListHtml += `
+<a href="song.html?id=${song.id}">
+    <div>${song.id}</div>
+    <div>${song.title}</div>
+    <div>${song.artistNames}</div>
+</a>
+`;
+    });
+
+    table.innerHTML = `
+<div>
+    <div>
+        <div>Id</div>
+        <div>Название</div>
+        <div>Авторы</div>
+    </div>
+</div>
+<div id="songs_list">${songsListHtml}</div>
+`;
+
+    return table;
+};

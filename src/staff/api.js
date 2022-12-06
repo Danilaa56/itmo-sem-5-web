@@ -9,6 +9,18 @@ let api = {
                         alert("Failed to list songs: " + response.statusText);
                     }
                 });
+        },
+        byId: (id) => {
+            return api.songs.list()
+                .then(songs => {
+                    for (let song of songs) {
+                        // noinspection EqualityComparisonWithCoercionJS
+                        if (song.id == id) {
+                            return song;
+                        }
+                    }
+                    alert(`Failed to find song with id '${id}'`);
+                })
         }
     },
 }

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Lyrics</title>
+  <meta name="keywords" content="текст, песни, исполнители, лсп, Lyrics">
+  <meta name="description" content="Текст песни">
+  <link rel="stylesheet" href="staff/style.css">
+  <script src="staff/common.js"></script>
+  <script src="staff/alert.js"></script>
+  <script src="staff/sort_table.js"></script>
+  <script src="staff/api.js"></script>
+</head>
+<body class="root">
+<div>
+  <header class="header wide_section">
+    <a href="index.html" class="home header__link">
+      Lyrics
+    </a>
+    <nav class="navigation_group">
+      <a href="index.html" class="header__link">Главная</a>
+      <a href="songs.html" class="header__link">Песни</a>
+    </nav>
+  </header>
+  <main class="content">
+    <section class="section">
+      <img id="songArtImageUrl"/>
+      <div class="song_cover__container" id="song_cover">
+        <div class="song_cover">
+          <div class="song_cover__title">{подождите JS}</div>
+        </div>
+        <div class="song_cover__shadow"></div>
+      </div>
+      <div>
+        <h1 class="header1" id="title">{подождите JS}</h1>
+        <h3 class="header2 __secondary_color" id="artists">{подождите JS}</h3>
+      </div>
+      <div class="lyrics" id="lyrics">{подождите JS}</div>
+    </section>
+  </main>
+</div>
+<footer class="footer wide_section">
+  <div id="load_time_label">{подождите JS}</div>
+  <div id="time_label">{подождите JS}</div>
+</footer>
+<script>
+  window.addEventListener("load", () => {
+    let properties = new URLSearchParams(window.location.search);
+    let id = properties.get('id') * 1;
+    if (id === undefined || isNaN(id)) {
+      window.location = "songs.html";
+    }
+    api.songs.byId(id).then(song => {
+      document.getElementById('title').innerText = song.fullTitle;
+      document.getElementById('artists').innerText = song.artistNames;
+      document.getElementById('lyrics').innerText = song.lyrics;
+      let song_cover = document.getElementById('song_cover');
+      song_cover.children[0].style.backgroundImage
+              = song_cover.children[1].style.backgroundImage
+              = `url("${song.songArtImageUrl}")`;
+      song_cover.children[0].children[0].innerText = song.title;
+    });
+  })
+</script>
+</body>
+</html>

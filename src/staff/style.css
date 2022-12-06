@@ -299,7 +299,7 @@ td.button:hover, .table > div > * > *.button:hover {
 }
 
 .span__for_friendship {
-    color:white;
+    color: white;
     background: red;
     padding: 4px;
     border-radius: 6px;
@@ -317,18 +317,21 @@ td.button:hover, .table > div > * > *.button:hover {
 
 .images_container {
     display: flex;
-    flex-direction: column;
-    width: 500px;
     margin-left: auto;
     margin-right: auto;
+    flex-wrap: wrap;
+}
+
+.images_container > * {
+    flex: 1;
 }
 
 .song_cover__container {
-    width: 500px;
-    height: 500px;
+    width: 300px;
+    height: 300px;
     border-radius: 12px;
     position: relative;
-    margin: 30px;
+    margin: 20px;
 }
 
 @media (max-width: 720px) {
@@ -402,4 +405,13 @@ td.button:hover, .table > div > * > *.button:hover {
 
 .song_cover:hover > .song_cover__title {
     opacity: 1;
+}
+
+.__secondary_color {
+    color: #333;
+}
+
+.lyrics {
+    font-weight: 400;
+    white-space: pre-wrap;
 }
