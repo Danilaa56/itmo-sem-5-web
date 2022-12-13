@@ -87,5 +87,7 @@ const executeLong = (loadingElement, promise, elementToHide) => {
         loadingElement.classList.add('hidden');
         if (elementToHide)
             elementToHide.classList.remove('hidden');
+    }).catch(() => {
+        loadingElement.classList.add('hidden');
     });
 }

@@ -24,8 +24,11 @@ let api = (() => {
                             }
                             return Promise.resolve(Array.from(songsJson));
                         } else {
-                            alert("Failed to list songs: " + response.statusText);
+                            alert("Не удалось получить список песен: " + response.statusText);
                         }
+                    })
+                    .catch(() => {
+                        alert("Не удалось получить список песен");
                     });
             },
             byId: (id) => {
