@@ -42,10 +42,11 @@ const songs_to_table = function (songs) {
     let songsListHtml = ``;
     songs.forEach((song) => {
         songsListHtml += `
-<a href="song.html?id=${song.id}">
+<a >
     <div>${song.id}</div>
     <div>${song.title}</div>
     <div>${song.artistNames}</div>
+    <div><div class="favourite_star ${song.isFavourite ? 'favourite_star__active' : ''} center_margin"></div></div>
 </a>
 `;
     });
@@ -56,10 +57,24 @@ const songs_to_table = function (songs) {
         <div>Id</div>
         <div>Название</div>
         <div>Авторы</div>
+        <div>Избранное</div>
     </div>
 </div>
 <div id="songs_list">${songsListHtml}</div>
 `;
+
+    for (let favouriteStarEl of table.querySelectorAll('.favourite_star')) {
+        favouriteStarEl.addEventListener('click', (e) => {
+            let newIsFavouriteValue = !favouriteStarEl.classList.contains('favourite_star__active');
+            let id = favouriteStarEl.parentElement.parentElement.children[0].innerText * 1;
+            api.songs.setIsFavourite(id, newIsFavouriteValue);
+            if (newIsFavouriteValue) {
+                favouriteStarEl.classList.add('favourite_star__active');
+            } else {
+                favouriteStarEl.classList.remove('favourite_star__active');
+            }
+        });
+    }
 
     return table;
 };

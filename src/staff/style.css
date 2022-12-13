@@ -103,6 +103,11 @@ a {
     margin-top: 1rem;
 }
 
+.center_margin {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /*.input_block {*/
 /*    background-color: transparent;*/
 /*    border: #27272780 solid 1px;*/
@@ -450,4 +455,23 @@ td.button:hover, .table > div > * > *.button:hover {
     100% {
         rotate: 360deg;
     }
+}
+
+.favourite_star {
+    width: 30px;
+    height: 30px;
+    background-color: #aaa;
+    mask: url("assets/ic_star.png");
+}
+
+.favourite_star:hover {
+    background-color: #555555;
+}
+
+.favourite_star__active {
+    background-color: #89afff;
+}
+
+.favourite_star__active:hover {
+    background-color: #466fd3;
 }

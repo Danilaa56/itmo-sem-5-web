@@ -1,5 +1,14 @@
 let api = (() => {
     let songsJson = undefined;
+    let favouriteSongIds = new Set();
+    if (localStorage['favourites']) {
+        for (let id of JSON.parse(localStorage['favourites']))
+            favouriteSongIds.add(id);
+    }
+    let saveFavourites = () => {
+        localStorage['favourites'] = JSON.stringify(Array.from(favouriteSongIds));
+        songsJson = undefined;
+    }
     return {
         songs: {
             list: () => {
@@ -10,6 +19,9 @@ let api = (() => {
                     .then(async response => {
                         if (response.status === 200) {
                             let songsJson = await response.json();
+                            for (let song of songsJson) {
+                                song.isFavourite = favouriteSongIds.has(song.id);
+                            }
                             return Promise.resolve(Array.from(songsJson));
                         } else {
                             alert("Failed to list songs: " + response.statusText);
@@ -53,6 +65,31 @@ let api = (() => {
                     }
                     return result;
                 })
+            },
+            setIsFavourite: (songId, isFavourite) => {
+                api.songs.byId(songId).then(song => {
+                    if (song === undefined) return;
+                    if (isFavourite) {
+                        favouriteSongIds.add(songId);
+                        saveFavourites();
+                        alert(`${song.title} добавлена в избранное`);
+                    } else {
+                        favouriteSongIds.delete(songId);
+                        saveFavourites();
+                        alert(`${song.title} удалена в избранного`);
+                    }
+                })
+            },
+            listFavouriteSongs: () => {
+                return api.songs.list().then(songs => {
+                   let result = [];
+                   for (let song of songs) {
+                       if (song.isFavourite) {
+                           result.push(song);
+                       }
+                   }
+                   return result;
+                });
             }
         },
     }
