@@ -150,14 +150,13 @@
             return;
         asciiStarted = true;
 
-        asciiAudio.play();
-
         let asciiArtView = document.getElementsByClassName("ascii_art")[0];
         asciiPromise
             .then(response => response.text())
             .then(text => {
                 let frames = text.split("SPLIT");
                 console.log("Load ascii art: " + frames.length + " frames");
+                asciiAudio.play();
 
                 let startTime = Date.now();
                 let lastShownFrame = -1;

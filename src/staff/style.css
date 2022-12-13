@@ -449,9 +449,6 @@ td.button:hover, .table > div > * > *.button:hover {
     0% {
         rotate: 0deg;
     }
-    /*50% {*/
-    /*    rotate: 180deg;*/
-    /*}*/
     100% {
         rotate: 360deg;
     }
@@ -462,6 +459,7 @@ td.button:hover, .table > div > * > *.button:hover {
     height: 30px;
     background-color: #aaa;
     mask: url("assets/ic_star.png");
+    -webkit-mask-image: url("assets/ic_star.png");
 }
 
 .favourite_star:hover {

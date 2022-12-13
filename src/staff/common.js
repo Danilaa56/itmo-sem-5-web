@@ -42,7 +42,7 @@ const songs_to_table = function (songs) {
     let songsListHtml = ``;
     songs.forEach((song) => {
         songsListHtml += `
-<a >
+<a href="song.html?id=${song.id}">
     <div>${song.id}</div>
     <div>${song.title}</div>
     <div>${song.artistNames}</div>
