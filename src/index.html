@@ -71,6 +71,11 @@
                 </p>
             </article>
         </section>
+        <section class="section" id="loading">
+            <div class="state_container">
+                <div class="loading"></div>
+            </div>
+        </section>
         <section class="section">
             <h1 class="header1">Коллекция песен</h1>
             <div class="images_container">
@@ -84,7 +89,7 @@
 </footer>
 <script>
     window.addEventListener("load", () => {
-        api.songs.list().then(songs => {
+        let songsPromise = api.songs.list().then(songs => {
             let artistIds = new Set();
             let songsCount = 0;
             songs.forEach((song) => {
@@ -130,6 +135,7 @@
 
             imagesContainer.innerHTML = imagesHtml;
         });
+        executeLong(document.querySelector('#loading'), songsPromise);
     });
 
     let asciiAudio = new Audio('data/jinxed.m4a');
@@ -165,7 +171,7 @@
                         asciiArtView.innerText = frames[frameIndex];
                         lastShownFrame = frameIndex;
                     }
-                }, 0);
+                }, 1);
             });
     });
 </script>

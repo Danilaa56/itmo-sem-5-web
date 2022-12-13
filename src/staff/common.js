@@ -63,3 +63,14 @@ const songs_to_table = function (songs) {
 
     return table;
 };
+
+const executeLong = (loadingElement, promise, elementToHide) => {
+    loadingElement.classList.remove('hidden');
+    if (elementToHide)
+        elementToHide.classList.add('hidden');
+    promise.then(() => {
+        loadingElement.classList.add('hidden');
+        if (elementToHide)
+            elementToHide.classList.remove('hidden');
+    });
+}

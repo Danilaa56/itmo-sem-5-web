@@ -27,6 +27,13 @@
         <section class="section">
             <h1 class="header1">Коллекция песен</h1>
         </section>
+        <section class="section" id="songs__loading">
+            <div class="state_container">
+                <div class="loading"></div>
+            </div>
+        </section>
+        <section class="section" id="songs_list__container">
+        </section>
     </main>
 </div>
 <footer class="footer wide_section">
@@ -35,10 +42,12 @@
 </footer>
 <script>
     window.addEventListener("load", () => {
-        api.songs.list().then(songs => {
-            document.querySelector('.content .section').appendChild(songs_to_table(songs));
-        });
-    })
+        executeLong(document.querySelector('#songs__loading'),
+            api.songs.list().then(songs => {
+                document.querySelector('#songs_list__container').innerHTML = songs_to_table(songs).outerHTML;
+            })
+        );
+    });
 </script>
 </body>
 </html>

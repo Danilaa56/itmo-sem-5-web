@@ -1,58 +1,68 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8"/>
-  <title>Lyrics - Поиск</title>
-  <meta name="keywords" content="поиск, искать, текст, песни, исполнители, лсп, Lyrics">
-  <meta name="description" content="Поиск текстов песней по словам">
-  <link rel="stylesheet" href="staff/style.css">
-  <script src="staff/common.js"></script>
-  <script src="staff/alert.js"></script>
-  <script src="staff/sort_table.js"></script>
-  <script src="staff/api.js"></script>
+    <meta charset="UTF-8"/>
+    <title>Lyrics - Поиск</title>
+    <meta name="keywords" content="поиск, искать, текст, песни, исполнители, лсп, Lyrics">
+    <meta name="description" content="Поиск текстов песней по словам">
+    <link rel="stylesheet" href="staff/style.css">
+    <script src="staff/common.js"></script>
+    <script src="staff/alert.js"></script>
+    <script src="staff/sort_table.js"></script>
+    <script src="staff/api.js"></script>
 </head>
 <body class="root">
 <div>
-  <header class="header wide_section">
-    <a href="index.html" class="home header__link">
-      Lyrics
-    </a>
-    <nav class="navigation_group">
-      <a href="index.html" class="header__link">Главная</a>
-      <a href="search.html" class="header__link">Поиск</a>
-      <a href="songs.html" class="header__link">Песни</a>
-    </nav>
-  </header>
-  <main class="content">
-    <section class="section">
-      <h1 class="header1">Поиск</h1>
-      <div class="search_bar__container">
-        <input id="search_bar" class="search_bar" placeholder="Введите запрос"/>
-      </div>
-      <h3 id="results_count" class="header2"></h3>
-    </section>
-    <section id="songs_list__container" class="section">
-
-    </section>
-  </main>
+    <header class="header wide_section">
+        <a href="index.html" class="home header__link">
+            Lyrics
+        </a>
+        <nav class="navigation_group">
+            <a href="index.html" class="header__link">Главная</a>
+            <a href="search.html" class="header__link">Поиск</a>
+            <a href="songs.html" class="header__link">Песни</a>
+        </nav>
+    </header>
+    <main class="content">
+        <section class="section">
+            <h1 class="header1">Поиск</h1>
+            <div class="search_bar__container">
+                <input id="search_bar" class="search_bar" placeholder="Введите запрос"/>
+            </div>
+        </section>
+        <section class="section hidden" id="search__loading">
+            <div class="state_container">
+                <div class="loading"></div>
+            </div>
+        </section>
+        <section class="section">
+            <h3 id="search__results_count" class="header2"></h3>
+            <div id="songs_list__container"></div>
+        </section>
+    </main>
 </div>
 <footer class="footer wide_section">
-  <div id="load_time_label">{подождите JS}</div>
-  <div id="time_label">{подождите JS}</div>
+    <div id="load_time_label">{подождите JS}</div>
+    <div id="time_label">{подождите JS}</div>
 </footer>
 <script>
-  window.addEventListener("load", () => {
-    let search_bar = document.querySelector('#search_bar');
-    search_bar.addEventListener('keydown', (e) => {
-      if (e.key !== 'Enter')
-        return;
-      // search_bar.blur();
-      api.songs.search(search_bar.value).then(songs => {
-        document.querySelector('#results_count').innerText = `Найдено песен: ${songs.length}`;
-        document.querySelector('#songs_list__container').innerHTML = songs_to_table(songs).outerHTML;
-      });
+    window.addEventListener("load", () => {
+        let searchBar = document.querySelector('#search_bar');
+        let searchLoading = document.querySelector('#search__loading');
+        let songsListContainer = document.querySelector('#songs_list__container')
+        searchBar.addEventListener('keydown', (e) => {
+            if (e.key !== 'Enter')
+                return;
+            // search_bar.blur();
+            // songsListContainer.classList.add('hidden');
+            executeLong(searchLoading,
+                api.songs.search(searchBar.value).then(songs => {
+                    document.querySelector('#search__results_count').innerText = `Найдено песен: ${songs.length}`;
+                    songsListContainer.innerHTML = songs_to_table(songs).outerHTML;
+                }),
+                songsListContainer.parentElement);
+        });
     });
-  })
 </script>
 </body>
 </html>
